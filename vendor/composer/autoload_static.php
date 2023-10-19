@@ -28,6 +28,7 @@ class ComposerStaticInitd47f1be60d65a2680520bead1c5aeb06
         ),
         'F' => 
         array (
+            'Firebase\\JWT\\' => 13,
             'Fig\\Http\\Message\\' => 17,
             'FastRoute\\' => 10,
         ),
@@ -67,6 +68,10 @@ class ComposerStaticInitd47f1be60d65a2680520bead1c5aeb06
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'Fig\\Http\\Message\\' => 
         array (
