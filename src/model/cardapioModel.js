@@ -81,4 +81,20 @@ removerReserva = async (iduser, idCardapio)=>{
     }
 }
 
-module.exports={get,busca,reservar,removerReserva,verificaReserva};
+deletar = async (idCardapio)=>{
+    sql = "DELETE FROM cardapio WHERE id_cardapio = '"+idCardapio+"'";
+    const deletar = mysql.query(sql);
+    if(deletar){
+        return{
+            success: true,
+            msg: "Cardápio deletado com sucesso",
+        }
+    }else{
+        return{
+            success: false,
+            msg: "Erro ao deletar cardápio"
+        }
+    }
+}
+
+module.exports={get,busca,reservar,removerReserva,verificaReserva,deletar};

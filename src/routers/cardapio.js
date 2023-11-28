@@ -19,7 +19,12 @@ userRouter.post('/reservar/:idCardapio', async(req, res, next)=>{
 
 userRouter.post('/cadastrar', async(req, res, next)=>{
     cadastrar=await cardapioController.cadastrar(req.headers, req.body);
-    res.status(200).send(cardapio);
+    res.status(200).send(cadastrar);
+})
+
+userRouter.delete('/deletar/:idCardapio', async(req, res, next)=>{
+    deletar=await cardapioController.deletar(req.headers, req.params.idCardapio);
+    res.status(200).send(deletar);
 })
 
 module.exports=userRouter;

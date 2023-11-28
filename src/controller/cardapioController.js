@@ -49,3 +49,14 @@ exports.cadastrar=async (headers, body) =>{
 
     return resp;
 }
+
+exports.deletar=async (headers, idCardapio) =>{
+    auth= await userModel.verifyJWT(headers['x-access-token'], headers['perfil']);
+    if(headers.iduser == auth.idUser){
+        resp= await cardapioModel.deletar(idCardapio);
+    }else{
+        resp= {"status":"null", auth}
+    }
+
+    return resp;
+}
