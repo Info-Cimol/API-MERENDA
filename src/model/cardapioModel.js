@@ -23,7 +23,7 @@ reservar=async(iduser, idCardapio)=>{
     if(reservar){
         const reservado = "UPDATE cardapio SET reservas = reservas +1 WHERE id_cardapio = '"+idCardapio+"'"
         const resultado = await mysql.query(reservado);
-        if(resultado){
+        if(resultado.affectedRows){
             return {
                 success: true,
                 msg: "Reservado com sucesso"
@@ -41,11 +41,10 @@ reservar=async(iduser, idCardapio)=>{
 }
 
 cadastrar=async(data)=>{
-    sql="INSERT INTO cardapio (data, nome, descricao) VALUES (?, ?, ?)"
+    sql="INSERT INTO cardapio (data, nome, descricao) VALUE ('"+data.data+"','"+data.nome+"','"+data.descricao+"')"
 
-    let cadastrar = await mysql.query(sql, [data.data, data.nome, data.descricao]);
-    
-    if(cadastrar.affctedRows > 0){
+    let cadastrar = await mysql.query(sql);
+    if(cadastrar.affectedRows > 0){
         return {
             success: true,
             msg: "Registro incluido com sucesso",
@@ -83,8 +82,9 @@ removerReserva = async (iduser, idCardapio)=>{
 
 deletar = async (idCardapio)=>{
     sql = "DELETE FROM cardapio WHERE id_cardapio = '"+idCardapio+"'";
-    const deletar = mysql.query(sql);
-    if(deletar){
+    const deletar = await mysql.query(sql);
+    console.log(deletar)
+    if(deletar.affectedRows > 0){
         return{
             success: true,
             msg: "Cardápio deletado com sucesso",
@@ -97,4 +97,4 @@ deletar = async (idCardapio)=>{
     }
 }
 
-module.exports={get,busca,reservar,removerReserva,verificaReserva,deletar};
+module.exports={get,busca,reservar,removerReserva,verificaReserva,deletar,cadastrar};
