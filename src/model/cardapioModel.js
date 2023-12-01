@@ -42,7 +42,7 @@ reservar=async(iduser, idCardapio)=>{
 
 cadastrar=async(data)=>{
     sql="INSERT INTO cardapio (data, nome, descricao) VALUE ('"+data.data+"','"+data.nome+"','"+data.descricao+"')"
-
+    console.log("data "+data.data);
     let cadastrar = await mysql.query(sql);
     if(cadastrar.affectedRows > 0){
         return {
