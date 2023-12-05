@@ -1,7 +1,27 @@
 const mysql=require('./mysqlConnect');
 
 get=async()=>{
-    return await mysql.query('SELECT id_cardapio, data, nome, descricao, reservas FROM cardapio');
+    return await mysql.query(`
+        SELECT 
+            c.id_cardapio, 
+            c.data, 
+            c.nome, 
+            c.descricao, 
+            c.reservas, 
+            COALESCE(manha_count, 0) AS manha_count,
+            COALESCE(tarde_count, 0) AS tarde_count,
+            COALESCE(noite_count, 0) AS noite_count
+        FROM cardapio c
+        LEFT JOIN (
+            SELECT 
+                id_cardapio,
+                COUNT(CASE WHEN turno = 'manha' THEN 1 END) AS manha_count,
+                COUNT(CASE WHEN turno = 'tarde' THEN 1 END) AS tarde_count,
+                COUNT(CASE WHEN turno = 'noite' THEN 1 END) AS noite_count
+            FROM reserva
+            GROUP BY id_cardapio
+        ) r ON c.id_cardapio = r.id_cardapio
+    `);
 }
 
 busca=async(idUser)=>{
@@ -13,9 +33,9 @@ busca=async(idUser)=>{
     return busca;
 }
 
-reservar=async(iduser, idCardapio)=>{
+reservar=async(iduser, idCardapio, turno)=>{
 
-    sql= "INSERT INTO reserva (id_cardapio, aluno_id) VALUE ('"+idCardapio+"','"+iduser+"')";
+    sql= "INSERT INTO reserva (id_cardapio, aluno_id, turno) VALUE ('"+idCardapio+"','"+iduser+"','"+turno+"' )";
 
     let reservar = await mysql.query(sql);
     console.log(reservar);

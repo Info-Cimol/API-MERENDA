@@ -23,14 +23,14 @@ exports.busca=async (headers) =>{
     return resp;
 }
 
-exports.reservar=async (headers, idCardapio) =>{
+exports.reservar=async (headers, idCardapio, body) =>{
     auth= await userModel.verifyJWT(headers['x-access-token'], headers['perfil']);
     if(headers.iduser == auth.idUser){
         const verificaReserva = await cardapioModel.verificaReserva(auth.idUser, idCardapio);
         if(verificaReserva === true){
             resp = await cardapioModel.removerReserva(auth.idUser, idCardapio);
         }else{
-            resp= await cardapioModel.reservar(auth.idUser, idCardapio);
+            resp= await cardapioModel.reservar(auth.idUser, idCardapio, body.turno);
         }
     }else{
         resp= {"status":"null", auth}

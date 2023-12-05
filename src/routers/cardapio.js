@@ -13,7 +13,7 @@ userRouter.get('/reservas', async(req, res, next)=>{
 })
 
 userRouter.post('/reservar/:idCardapio', async(req, res, next)=>{
-    reservar=await cardapioController.reservar(req.headers, req.params.idCardapio);
+    reservar=await cardapioController.reservar(req.headers, req.params.idCardapio, req.body);
     res.status(200).send(reservar);
 })
 
