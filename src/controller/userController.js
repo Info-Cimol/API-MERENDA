@@ -1,4 +1,5 @@
 const userModel=require("../model/userModel");
+const cryptoJs = require('crypto-js');
 
 exports.get= async (headers)=>{
   if(headers['perfil']!="admin"){
@@ -19,5 +20,10 @@ exports.get= async (headers)=>{
 }
 
 exports.login= async (body)=>{
-  return await userModel.login(body)
+  return await userModel.login(body);
+}
+
+exports.alterarSenha= async (iduser, body) =>{ 
+  const senhaAlterada = cryptoJs.MD5(body.senhaAlterada).toString();
+  return await userModel.alterarSenha(iduser, senhaAlterada);
 }

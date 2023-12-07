@@ -1,5 +1,6 @@
-                                  const mysql=require("./mysqlConnect");
+const mysql=require("./mysqlConnect");
 const jwt=require("jsonwebtoken");
+const cryptoJs = require('crypto-js');
  get=async()=>{
   //users=await mysql.query("SELECT *, (SELECT nome FROM pessoa WHERE id=u.pessoa_id_pessoa) as nome FROM usuario u");
   users=await mysql.query("SELECT p.nome, p.email, u.senha FROM usuario u JOIN pessoa p ON p.id_pessoa=u.pessoa_id_pessoa")
@@ -7,6 +8,8 @@ const jwt=require("jsonwebtoken");
 }
 
 login= async (data)=>{
+   const senha = cryptoJs.MD5(data.senha).toString();
+   console.log("senha "+senha)
    sql="SELECT p.id_pessoa as id, p.nome, p.email,"+
    " (SELECT COUNT(pessoa_id_pessoa) FROM professor WHERE pessoa_id_pessoa=p.id_pessoa) as professor,"+
    "(SELECT COUNT(professor_pessoa_id_pessoa) FROM coordenacao WHERE professor_pessoa_id_pessoa=p.id_pessoa) as coordenador,"+
@@ -17,7 +20,7 @@ login= async (data)=>{
    
    " FROM usuario u"+
    " JOIN pessoa p ON p.id_pessoa=u.pessoa_id_pessoa"+
-   " WHERE p.email='"+data.email+"' AND u.senha='"+data.senha+"' ";
+   " WHERE p.email='"+data.email+"' AND u.senha='"+senha+"' ";
 
    console.log(sql)
    const usuarios = await  mysql.query(sql);
@@ -60,8 +63,11 @@ login= async (data)=>{
             sql="UPDATE usuario set perfil='"+perfil.toString()+"' WHERE pessoa_id_pessoa="+usuarios[0].id;
             console.log(sql);
             await  mysql.query(sql);
-      
-            result={ auth: true, token: token , user:usuarios[0]}
+            if(senha === "7eeee60639029381002d637603032e39"){
+               result={ auth: true, token: token , user:usuarios[0], primeiroLogin: true}
+            }else{
+               result={ auth: true, token: token , user:usuarios[0]}
+            }
          }else{
             result={ auth: true, token: token , user:null};
          }
@@ -102,4 +108,20 @@ verifyJWT= async (token, perfil)=>{
    return resp;
 } 
 
-module.exports={get, login, verifyJWT}
+alterarSenha= async(iduser, senhaAlterada)=>{
+   sql = 'UPDATE usuario SET senha = "'+senhaAlterada+'" WHERE pessoa_id_pessoa = "'+iduser+'"';
+   novaSenha = await mysql.query(sql);
+   if(novaSenha.affectedRows > 0){
+      return {
+         succsses: true,
+         msg: 'Senha alterada com sucesso!'
+      };
+   }else{
+      return{
+         succsses: false,
+         msg: 'Erro ao alterar senha!'
+      };
+   }
+}
+
+module.exports={get, login, verifyJWT, alterarSenha}
