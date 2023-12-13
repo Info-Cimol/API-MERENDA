@@ -27,4 +27,9 @@ userRouter.delete('/deletar/:idCardapio', async(req, res, next)=>{
     res.status(200).send(deletar);
 })
 
+userRouter.put('/editar/:idCardapio', async(req, res, next)=>{
+    user=await cardapioController.editar(req.headers, req.params.idCardapio, req.body);
+    res.status(200).send(user)
+  })
+
 module.exports=userRouter;

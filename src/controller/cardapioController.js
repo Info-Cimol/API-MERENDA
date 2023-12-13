@@ -60,3 +60,17 @@ exports.deletar=async (headers, idCardapio) =>{
 
     return resp;
 }
+
+exports.editar=async (headers, idCardapio, body) =>{
+    console.log("idCardapio "+idCardapio)
+    console.log(body);
+    console.log(headers.iduser);
+    auth= await userModel.verifyJWT(headers['x-access-token'], headers['perfil']);
+    if(headers.iduser == auth.idUser){
+        resp= await cardapioModel.editar(idCardapio, body);
+    }else{
+        resp= {"status":"null", auth}
+    }
+
+    return resp;
+}

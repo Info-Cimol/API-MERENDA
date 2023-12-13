@@ -117,4 +117,21 @@ deletar = async (idCardapio)=>{
     }
 }
 
-module.exports={get,busca,reservar,removerReserva,verificaReserva,deletar,cadastrar};
+editar = async(idCardapio, body) =>{
+    sql= "UPDATE cardapio SET nome ='"+body.nome+"', descricao='"+body.descricao+"', data='"+body.data+"' WHERE id_cardapio ='"+idCardapio+"'";
+    const editarCardapio = await mysql.query(sql);
+    console.log(editarCardapio);
+    if(editarCardapio.affectedRows > 0){
+        return{
+            success: true,
+            msg: 'Cardápio editado com sucesso'
+        }
+    }else{
+        return{
+            success: false,
+            msg: 'Erro ao editar cardápio'
+        }
+    }
+}
+
+module.exports={get,busca,reservar,removerReserva,verificaReserva,deletar,cadastrar,editar};
