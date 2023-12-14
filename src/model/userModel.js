@@ -1,6 +1,9 @@
+require('dotenv').config();
 const mysql=require("./mysqlConnect");
 const jwt=require("jsonwebtoken");
 const cryptoJs = require('crypto-js');
+const key = process.env.KEY;
+
  get=async()=>{
   //users=await mysql.query("SELECT *, (SELECT nome FROM pessoa WHERE id=u.pessoa_id_pessoa) as nome FROM usuario u");
   users=await mysql.query("SELECT p.nome, p.email, u.senha FROM usuario u JOIN pessoa p ON p.id_pessoa=u.pessoa_id_pessoa")
@@ -63,7 +66,7 @@ login= async (data)=>{
             sql="UPDATE usuario set perfil='"+perfil.toString()+"' WHERE pessoa_id_pessoa="+usuarios[0].id;
             console.log(sql);
             await  mysql.query(sql);
-            if(senha === "7eeee60639029381002d637603032e39"){
+            if(senha === key){
                result={ auth: true, token: token , user:usuarios[0], primeiroLogin: true}
             }else{
                result={ auth: true, token: token , user:usuarios[0]}

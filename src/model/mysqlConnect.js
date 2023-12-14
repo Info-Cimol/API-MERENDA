@@ -1,14 +1,15 @@
+require('dotenv').config();
 async function connect(){
   if(global.connection && global.connection.state !== 'disconnected')
       return global.connection;
 
   const mysql = require("mysql2/promise");
   const connection = await mysql.createConnection({
-      host: 'mysql.infocimol.com.br',
+      host: process.env.HOST,
       port:'',
-      user:'infocimol',
-      password : 'c1i2m3o4l5',
-      database: 'infocimol'
+      user: process.env.USER,
+      password: process.env.PASSWORD,
+      database: process.env.DATABASE
       
     });
   console.log("Conectou no MySQL!");
