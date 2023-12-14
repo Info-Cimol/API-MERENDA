@@ -95,7 +95,10 @@ removerReserva = async (iduser, idCardapio, turno)=>{
         const reservado = "UPDATE cardapio SET reservas = reservas -1 WHERE id_cardapio = '"+idCardapio+"' AND reservas > 0"
         const resultado = await mysql.query(reservado);
         if(resultado){
-            return remocao;
+            return {
+                deletado: true,
+                remocao
+            }
         }
     }
 }
