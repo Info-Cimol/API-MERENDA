@@ -15,7 +15,7 @@ exports.get=async (headers) =>{
 exports.busca=async (headers) =>{
     auth= await userModel.verifyJWT(headers['x-access-token'], headers['perfil']);
     if(headers.iduser == auth.idUser){
-        resp= await cardapioModel.busca(auth.idUser);
+        resp= await cardapioModel.busca(headers.iduser);
     }else{
         resp= {"status":"null", auth}
     }
@@ -26,9 +26,9 @@ exports.busca=async (headers) =>{
 exports.reservar=async (headers, idCardapio, body) =>{
     auth= await userModel.verifyJWT(headers['x-access-token'], headers['perfil']);
     if(headers.iduser == auth.idUser){
-        const verificaReserva = await cardapioModel.verificaReserva(auth.idUser, idCardapio);
+        const verificaReserva = await cardapioModel.verificaReserva(auth.idUser, idCardapio, body.turno);
         if(verificaReserva === true){
-            resp = await cardapioModel.removerReserva(auth.idUser, idCardapio);
+            resp = await cardapioModel.removerReserva(auth.idUser, idCardapio, body.turno);
         }else{
             resp= await cardapioModel.reservar(auth.idUser, idCardapio, body.turno);
         }

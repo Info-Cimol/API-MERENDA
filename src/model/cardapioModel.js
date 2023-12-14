@@ -78,8 +78,8 @@ cadastrar=async(data)=>{
     }
 }
 
-verificaReserva = async (iduser, idCardapio)=>{
-    sql = "SELECT * FROM reserva WHERE aluno_id = '"+iduser+"' AND id_cardapio = '"+idCardapio+"'";
+verificaReserva = async (iduser, idCardapio, turno)=>{
+    sql = "SELECT * FROM reserva WHERE aluno_id = '"+iduser+"' AND id_cardapio = '"+idCardapio+"' AND turno = '"+turno+"'";
     const resultado = await mysql.query(sql);
     if(resultado.length > 0){
         return true;
@@ -88,8 +88,8 @@ verificaReserva = async (iduser, idCardapio)=>{
     }
 }
 
-removerReserva = async (iduser, idCardapio)=>{
-    sql = "DELETE FROM reserva WHERE aluno_id = '"+iduser+"' AND id_cardapio = '"+idCardapio+"'";
+removerReserva = async (iduser, idCardapio, turno)=>{
+    sql = "DELETE FROM reserva WHERE aluno_id = '"+iduser+"' AND id_cardapio = '"+idCardapio+"' AND turno = '"+turno+"'";
     const remocao = mysql.query(sql);
     if(remocao){
         const reservado = "UPDATE cardapio SET reservas = reservas -1 WHERE id_cardapio = '"+idCardapio+"' AND reservas > 0"

@@ -12,9 +12,9 @@ userRouter.get('/', async(req, res, next)=>{
     res.status(200).send(user);
   })
 
-  userRouter.put('/alterarSenha/:iduser', async(req,res, next)=>{
+  userRouter.put('/alterarSenha/:iduser', async(req, res, next)=>{
     user=await userController.alterarSenha(req.params.iduser, req.body);
     res.status(200).send(user);
   })
-
+  
 module.exports=userRouter;
