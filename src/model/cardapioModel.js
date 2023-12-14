@@ -25,9 +25,9 @@ get=async()=>{
 }
 
 busca=async(idUser)=>{
-    sql= "SELECT cardapio.* FROM cardapio "+ 
+    sql= "SELECT cardapio.*, reserva.turno FROM cardapio "+
     "INNER JOIN reserva ON cardapio.id_cardapio = reserva.id_cardapio "+
-     "WHERE reserva.aluno_id ="+idUser;
+    "WHERE reserva.aluno_id ="+idUser
     
     let busca = await mysql.query(sql);
     return busca;
